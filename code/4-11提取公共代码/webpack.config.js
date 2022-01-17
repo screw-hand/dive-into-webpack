@@ -10,7 +10,7 @@ const autoWebPlugin = new AutoWebPlugin('pages', {
   template: './template.html', // HTML 模版文件所在的文件路径
   // 提取出所有页面公共的代码
   commonsChunk: {
-    name: 'common',// 提取出公共代码 Chunk 的名称
+    name: 'common_chunk',// 提取出公共代码 Chunk 的名称
   },
 });
 
@@ -19,7 +19,7 @@ module.exports = {
   // autoWebPlugin.entry 方法可以获取到生成入口配置
   entry: autoWebPlugin.entry({
     // 这里可以加入你额外需要的 Chunk 入口
-    base: './base.js'
+    base_entry: './base.js'
   }),
   output: {
     filename: '[name]_[chunkhash:8].js',// 给输出的文件名称加上 hash 值
@@ -47,9 +47,9 @@ module.exports = {
     // 为了从 common 中提取出 base 也包含的部分
     new CommonsChunkPlugin({
       // 从 common 和 base 两个现成的 Chunk 中提取公共的部分
-      chunks: ['common', 'base'],
+      chunks: ['common_chunk', 'base_entry'],
       // 把公共的部分放到 base 中
-      name: 'base'
+      name: 'common_entry'
     }),
     new ExtractTextPlugin({
       filename: `[name]_[contenthash:8].css`,// 给输出的 CSS 文件名称加上 hash 值
